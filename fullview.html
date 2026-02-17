@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brain Dumper- Full View</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f9fafb;
+      color: #111827;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: white;
+      padding: 24px 40px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    .header p {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+
+    .header-stats {
+      display: flex;
+      gap: 24px;
+    }
+
+    .header-stat {
+      text-align: center;
+    }
+
+    .header-stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      display: block;
+    }
+
+    .header-stat-label {
+      font-size: 12px;
+      opacity: 0.9;
+      margin-top: 2px;
+    }
+
+    .search-bar {
+      background: white;
+      padding: 20px 40px;
+      border-bottom: 1px solid #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .search-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 14px 48px 14px 20px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 15px;
+      transition: all 0.2s;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 20px;
+      color: #9ca3af;
+    }
+
+    .main-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 40px;
+      display: flex;
+      gap: 32px;
+    }
+
+    .sidebar {
+      width: 280px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-section {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      margin-bottom: 20px;
+    }
+
+    .sidebar-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .folder-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .folder-item {
+      padding: 12px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid transparent;
+    }
+
+    .folder-item:hover {
+      background: #f3f4f6;
+      border-color: #e5e7eb;
+    }
+
+    .folder-item.active {
+      background: #eff6ff;
+      border-color: #3b82f6;
+    }
+
+    .folder-item-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .folder-icon {
+      font-size: 16px;
+    }
+
+    .folder-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #111827;
+    }
+
+    .folder-count {
+      font-size: 12px;
+      color: white;
+      background: #3b82f6;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+
+    .folder-actions {
+      display: none;
+      gap: 4px;
+    }
+
+    .folder-item:hover .folder-actions {
+      display: flex;
+    }
+
+    .folder-delete {
+      background: none;
+      border: none;
+      color: #ef4444;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .folder-delete:hover {
+      background: #fee2e2;
+    }
+
+    .clips-container {
+      flex: 1;
+    }
+
+    .clips-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .clips-title {
+      font-size: 22px;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .filter-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      border: 1px solid #e5e7eb;
+      background: white;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .filter-btn:hover {
+      border-color: #3b82f6;
+      color: #3b82f6;
+    }
+
+    .filter-btn.active {
+      background: #3b82f6;
+      color: white;
+      border-color: #3b82f6;
+    }
+
+    .clips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 16px;
+    }
+
+    .clip-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e5e7eb;
+      transition: all 0.2s;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .clip-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-color: #3b82f6;
+      transform: translateY(-2px);
+    }
+
+    .clip-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 12px;
+    }
+
+    .clip-folder-tag {
+      background: #eff6ff;
+      color: #3b82f6;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .clip-delete {
+      background: none;
+      border: none;
+      color: #9ca3af;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: all 0.2s;
+      opacity: 0;
+    }
+
+    .clip-card:hover .clip-delete {
+      opacity: 1;
+    }
+
+    .clip-delete:hover {
+      background: #fee2e2;
+      color: #ef4444;
+    }
+
+    .clip-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #374151;
+      margin-bottom: 16px;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 6;
+      -webkit-box-orient: vertical;
+    }
+
+    .clip-text mark {
+      background: #fef08a;
+      padding: 2px 0;
+      border-radius: 2px;
+    }
+
+    .clip-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 12px;
+      border-top: 1px solid #f3f4f6;
+    }
+
+    .clip-source {
+      font-size: 12px;
+      color: #6b7280;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .clip-timestamp {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 80px 40px;
+      color: #6b7280;
+    }
+
+    .empty-state-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .empty-state h3 {
+      font-size: 18px;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+
+    .empty-state p {
+      font-size: 14px;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 60px 40px;
+      color: #6b7280;
+    }
+
+    .no-results-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+      opacity: 0.5;
+    }
+
+    .no-results h3 {
+      font-size: 16px;
+      color: #374151;
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <div>
+        <h1> Brain Dumper</h1>
+        <p>All your saved notes in one place</p>
+      </div>
+      <div class="header-stats">
+        <div class="header-stat">
+          <span class="header-stat-value" id="totalFolders">0</span>
+          <span class="header-stat-label">Folders</span>
+        </div>
+        <div class="header-stat">
+          <span class="header-stat-value" id="totalClips">0</span>
+          <span class="header-stat-label">Notes</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <div class="search-container">
+      <input 
+        type="text" 
+        class="search-input" 
+        id="searchInput" 
+        placeholder="Search your clips by text, source, or folder..."
+      >
+      <span class="search-icon">🔍</span>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">
+          <span>📁</span>
+          <span>Folders</span>
+        </div>
+        <div class="folder-list" id="folderList">
+          <div class="folder-item active" data-folder-id="all">
+            <div class="folder-item-info">
+              <span class="folder-icon">📂</span>
+              <span class="folder-name">All Notes</span>
+            </div>
+            <span class="folder-count" id="allClipsCount">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="clips-container">
+      <div class="clips-header">
+        <h2 class="clips-title" id="clipsTitle">All Notes</h2>
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-sort="newest">Newest</button>
+          <button class="filter-btn" data-sort="oldest">Oldest</button>
+        </div>
+      </div>
+      <div class="clips-grid" id="clipsGrid">
+        <div class="empty-state">
+          <div class="empty-state-icon">📝</div>
+          <h3>No Notes yet</h3>
+          <p>Start saving text from web pages to see them here!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="fullview.js"></script>
+</body>
+</html>

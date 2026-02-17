@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brain Dumper</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 380px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f9fafb;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: white;
+      padding: 20px;
+    }
+
+    .header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .header p {
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    .stats {
+      display: flex;
+      gap: 16px;
+      padding: 16px 20px;
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .stat {
+      flex: 1;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #3b82f6;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+
+    .content {
+      padding: 20px;
+    }
+
+    .section {
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 12px;
+    }
+
+    .folder-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .folder-item {
+      background: white;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .folder-item:hover {
+      border-color: #3b82f6;
+      background: #eff6ff;
+      transform: translateX(2px);
+    }
+
+    .folder-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .folder-icon {
+      font-size: 18px;
+    }
+
+    .folder-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #111827;
+    }
+
+    .folder-count {
+      font-size: 12px;
+      color: white;
+      background: #3b82f6;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 500;
+    }
+
+    .recent-clips {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .clip-item {
+      background: white;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .clip-item:hover {
+      border-color: #3b82f6;
+      background: #eff6ff;
+    }
+
+    .clip-text {
+      font-size: 13px;
+      color: #374151;
+      margin-bottom: 6px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .clip-meta {
+      font-size: 11px;
+      color: #6b7280;
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 12px;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 24px;
+      color: #6b7280;
+      font-size: 13px;
+    }
+
+    .empty-state-icon {
+      font-size: 36px;
+      margin-bottom: 8px;
+      opacity: 0.5;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f3f4f6;
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>📚 Brain Dumper</h1>
+    <p>Your organized notes</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <span class="stat-value" id="folderCount">0</span>
+      <span class="stat-label">Folders</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value" id="clipCount">0</span>
+      <span class="stat-label">Notes</span>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="section">
+      <div class="section-title">📁 Folders</div>
+      <div class="folder-list" id="folderList">
+        <div class="empty-state">
+          <div class="empty-state-icon">📂</div>
+          <div>No folders yet. Select text on any page to save the information!</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">⏱️ Recent Notes</div>
+      <div class="recent-clips" id="recentClips">
+        <div class="empty-state">
+          <div class="empty-state-icon">📝</div>
+          <div>No Notes saved yet</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn" id="openFullView">Open Full View</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
