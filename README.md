@@ -147,7 +147,7 @@ BrainDumper/
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/brain-dumper.git
+git clone https://github.com/CSVarshini2967/Brain-Dumper.git
 ```
 
 2. Open Chrome and navigate to:
