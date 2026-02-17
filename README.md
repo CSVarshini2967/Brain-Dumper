@@ -132,11 +132,11 @@ BrainDumper/
 
 - Popup view  
 <p align="center">
-  <img src="SCREENSHOTS/POPUP.png" width="500"/>
+  <img src="SCREENSHOTS/POPUP.png" height="600" width="500"/>
 </p>
 - Full view
 <p align="center">
-  <img src="SCREENSHOTS/FULLVIEW.png" width="500"/>
+  <img src="SCREENSHOTS/FULLVIEW.png" height="600" width="500"/>
 </p>
 
 
